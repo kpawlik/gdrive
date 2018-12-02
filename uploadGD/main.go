@@ -1,8 +1,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
+	"github.com/kpawlik/gdrive/gdrive" //"golang.org/x/net/context"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/drive/v2"
 	"io/ioutil"
 	"log"
 	"mime"
@@ -11,11 +15,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/kpawlik/gdrive/gdrive"
-	"golang.org/x/net/context"
-	"golang.org/x/oauth2/google"
-	"google.golang.org/api/drive/v2"
 )
 
 var (
@@ -120,7 +119,6 @@ func uploadFile(d *drive.Service, title string, description string,
 	}
 
 	parentId := getOrCreateFolder(d, parentName)
-
 	fmt.Println("Start upload")
 	f := &drive.File{Title: title, Description: description, MimeType: mimeType}
 	if parentId != "" {
@@ -150,10 +148,6 @@ func uploadFile(d *drive.Service, title string, description string,
 
 func main() {
 	flag.Parse()
-
-	// fmt.Println("input: %s", *inputPath)
-	// fmt.Println("output: %s", *outputFile)
-	// fmt.Println("folder: %s", *folderName)
 
 	ctx := context.Background()
 
@@ -191,20 +185,4 @@ func main() {
 	fmt.Printf("Mime : %s\n", mimeType)
 
 	uploadFile(srv, outputTitle, "", *folderName, mimeType, *inputPath)
-
-	/*
-		r, err := srv.Files.List().MaxResults(10).Do()
-		if err != nil {
-			log.Fatalf("Unable to retrieve files.", err)
-		}
-
-		fmt.Println("Files:")
-		if len(r.Items) > 0 {
-			for _, i := range r.Items {
-				fmt.Printf("%s (%s)\n", i.Title, i.Id)
-			}
-		} else {
-			fmt.Print("No files found.")
-		}
-	*/
 }

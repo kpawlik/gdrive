@@ -1,6 +1,7 @@
 package gdrive
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,9 +9,8 @@ import (
 	"net/url"
 	"os"
 	"os/user"
-	"path/filepath"
+	"path/filepath" // "golang.org/x/net/context"
 
-	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 )
 
